@@ -82,15 +82,15 @@ Coordinates the workflow.
 
 ## Hotkey
 
-Two routes exist:
+`content.js` listens for `keydown` (capture phase):
 
 ```text
-Ctrl+Q
- ├── Chrome Commands API → service worker → content script
- └── in-page keydown fallback → content script
+Ctrl+C / ⌘C
+ ├── typing in an input or text highlighted → browser copies as usual
+ └── nothing highlighted → copy the response on screen
 ```
 
-A 500ms guard prevents duplicate execution.
+There is no Chrome command: `Ctrl+C` cannot be a browser-level command, and the extension only acts when the browser would copy nothing. A 500ms guard prevents duplicate execution.
 
 ## Why not use `innerText`?
 

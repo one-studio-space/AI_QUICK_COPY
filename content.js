@@ -18,10 +18,15 @@
     return null;
   }
 
+  const IS_MAC = /Mac|iPhone|iPad/.test(
+    navigator.userAgentData?.platform || navigator.platform
+  );
+  const COPY_KEY = IS_MAC ? "⌘C" : "Ctrl+C";
+
   const HINT_DURATION = 4500;
   const SELECT_HINT =
     "Không nhận diện được câu trả lời.\n" +
-    "👉 Bôi đen đoạn cần copy rồi nhấn Ctrl+Q lại.";
+    `👉 Bôi đen đoạn cần copy rồi nhấn ${COPY_KEY}.`;
 
   /**
    * What to copy, in order of priority:
@@ -96,37 +101,43 @@
     );
   }
 
-  chrome.runtime.onMessage.addListener((message) => {
-    if (message?.type === "AI_QUICK_COPY") {
-      copyResponse();
-    }
-  });
+  function isEditable(element) {
+    return (
+      element instanceof HTMLElement &&
+      (
+        element.isContentEditable ||
+        ["INPUT", "TEXTAREA", "SELECT"].includes(element.tagName)
+      )
+    );
+  }
+
+  function hasSelection() {
+    const selection = window.getSelection();
+    return Boolean(selection && !selection.isCollapsed && selection.toString().trim());
+  }
 
   document.addEventListener(
     "keydown",
     (event) => {
       if (event.repeat) return;
 
-      const isCtrlQ =
-        event.ctrlKey &&
+      // Ctrl+C on Windows/Linux, ⌘C on macOS.
+      const isCopy =
+        (IS_MAC ? event.metaKey && !event.ctrlKey : event.ctrlKey && !event.metaKey) &&
         !event.altKey &&
         !event.shiftKey &&
-        !event.metaKey &&
-        event.code === "KeyQ";
+        event.key.toLowerCase() === "c";
 
-      if (!isCtrlQ) return;
+      if (!isCopy) return;
 
-      const target = event.target;
-      const isEditable =
-        target instanceof HTMLElement &&
-        (
-          target.isContentEditable ||
-          ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName)
-        );
+      // Never hijack copy while the user is typing.
+      if (isEditable(event.target) || isEditable(document.activeElement)) return;
 
-      // Never hijack Ctrl+Q while the user is typing.
-      if (isEditable) return;
+      // Text is highlighted: let the browser copy it as usual.
+      if (hasSelection()) return;
 
+      // Nothing highlighted: the browser would copy nothing, so copy the
+      // response on screen instead.
       event.preventDefault();
       event.stopPropagation();
 
