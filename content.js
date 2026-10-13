@@ -18,7 +18,7 @@
     return null;
   }
 
-  const IS_MAC = /Mac|iPhone|iPad/.test(
+  const IS_MAC = /mac|iphone|ipad/i.test(
     navigator.userAgentData?.platform || navigator.platform
   );
   const COPY_KEY = IS_MAC ? "⌘C" : "Ctrl+C";
