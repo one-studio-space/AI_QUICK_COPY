@@ -2,6 +2,11 @@
 
 All notable changes to this project are documented in this file.
 
+## 1.4.0
+- The shortcut is now `Ctrl+C` (`⌘C` on macOS) instead of `Ctrl+Q`: with nothing highlighted, it copies the AI response on screen as Markdown.
+- With text highlighted, or in an input field, `Ctrl+C` is left to the browser and copies as usual.
+- Removed `Ctrl+Q` and the browser command; the "Hotkey không chạy?" card was removed from the settings page.
+
 ## 1.3.1
 - Fixed code indentation being stripped inside code blocks (Python, YAML, etc. are now copied runnable).
 - Fixed nested lists being flattened; sub-items and code blocks inside list items keep their indentation.

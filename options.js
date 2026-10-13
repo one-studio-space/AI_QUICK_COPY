@@ -89,10 +89,4 @@ async function init() {
   roleInputs.forEach((input) => input.addEventListener("input", onChange));
 }
 
-document.getElementById("shortcuts").addEventListener("click", () => {
-  chrome.tabs.create({
-    url: "chrome://extensions/shortcuts"
-  });
-});
-
 init();

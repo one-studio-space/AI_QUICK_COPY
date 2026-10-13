@@ -1,8 +1,8 @@
 # AI Quick Copy
 
-> Copy the AI chat response you are reading as clean Markdown with a single keyboard shortcut.
+> Copy the AI chat response you are reading as clean Markdown — just press `Ctrl+C` with nothing selected.
 
-![Version](https://img.shields.io/badge/version-1.3.1-blue)
+![Version](https://img.shields.io/badge/version-1.4.0-blue)
 ![Manifest](https://img.shields.io/badge/manifest-v3-green)
 ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
@@ -26,8 +26,8 @@ AI Quick Copy is a lightweight Chrome / Edge extension that grabs the assistant 
 
 ## Features
 
-- **One shortcut** — press `Ctrl+Q` to copy the AI response you are reading. At the bottom of a chat that is the latest one; scroll up and it copies the older answer on screen.
-- **Copy just a part** — highlight any passage and press `Ctrl+Q` to copy only that, still as Markdown and labeled as an excerpt. List markers, numbering, quotes and tables around the selection are kept.
+- **The shortcut you already know** — press `Ctrl+C` (`⌘C` on macOS) with nothing highlighted to copy the AI response you are reading. At the bottom of a chat that is the latest one; scroll up and it copies the older answer on screen.
+- **Normal copy is untouched** — with text highlighted, or inside an input field, `Ctrl+C` copies exactly as it always does.
 - **Know who wrote what** — each copy is labeled with the AI's name (and an optional role) at the top and bottom, so answers from different AIs stay distinguishable in one file.
 - **Real Markdown, not plain text** — the response DOM is serialized into Markdown:
 
@@ -112,35 +112,25 @@ The extension is not yet published on the Chrome Web Store. Install it manually:
 ## Usage
 
 1. Open a conversation on a supported site.
-2. Press the shortcut:
+2. Make sure nothing is highlighted and press:
 
    | Platform | Shortcut |
    |---|---|
-   | Windows / Linux | `Ctrl` + `Q` |
-   | macOS | `Control` + `Q` (not `⌘ Command` — `⌘Q` quits the browser) |
+   | Windows / Linux | `Ctrl` + `C` |
+   | macOS | `⌘ Command` + `C` |
 
 3. A toast confirms the copy and shows which AI was detected. Paste into VS Code, Obsidian, Notion, or any Markdown editor.
 
 ### What gets copied
 
-`Ctrl+Q` picks the content in this order:
+With nothing highlighted, `Ctrl+C` copies:
 
-1. **Your selection** — if you highlighted text, only that passage is copied (marked as an *excerpt*).
-2. **The response on screen** — the answer crossing the middle of the screen, or the one taking up the most of it.
-3. **The latest response** — when no answer is on screen.
+1. **The response on screen** — the answer crossing the middle of the screen, or the one taking up the most of it.
+2. **The latest response** — when no answer is on screen.
 
-If no response can be recognized (for example after a site redesign), an orange tip appears asking you to highlight the passage and press `Ctrl+Q` again — so you can always copy, even when detection fails.
+The extension only acts when the browser would copy nothing. With text highlighted, or while you are typing in an input field, `Ctrl+C` is left to the browser as usual.
 
-The shortcut is ignored while you are typing in an input field, so it never interferes with the chat box.
-
-### Changing the shortcut
-
-If the browser reserves the shortcut, or you prefer a different one, open:
-
-- Chrome: `chrome://extensions/shortcuts`
-- Edge: `edge://extensions/shortcuts`
-
-You can also open this page from the extension's **Options** page.
+If no response can be recognized (for example after a site redesign), an orange tip appears asking you to highlight the passage and press `Ctrl+C` — a normal copy, so you can always copy, even when detection fails.
 
 ## Privacy & Permissions
 
@@ -159,8 +149,8 @@ Content scripts run only on the supported domains declared in [`manifest.json`](
 ```text
 .
 ├── manifest.json        # Extension declaration (Manifest V3)
-├── service-worker.js    # Routes the shortcut to the active tab; icon opens settings
-├── content.js           # Orchestration + in-page hotkey fallback
+├── service-worker.js    # Toolbar icon opens settings
+├── content.js           # Orchestration + Ctrl+C / ⌘C handler
 ├── core.js              # Shared DOM helpers, clipboard, toast
 ├── markdown.js          # DOM → Markdown serializer
 ├── block.js             # Wraps Markdown in an AI identity block
@@ -185,12 +175,12 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full data flow.
 
 **Nothing happens when I press the shortcut**
 - Refresh the AI tab after installing or updating the extension.
-- Check `chrome://extensions/shortcuts` to make sure the shortcut is assigned and not taken by another extension.
+- Make sure nothing is highlighted — with a selection, `Ctrl+C` does a normal copy.
 - Click outside the chat input before pressing the shortcut.
 
 **"Không nhận diện được câu trả lời" (response not recognized) / wrong content copied**
 
-Highlight the passage you want and press `Ctrl+Q` again — selection copying works on every supported site regardless of its layout.
+Highlight the passage you want and press `Ctrl+C` — a normal copy works on every supported site regardless of its layout.
 
 To fix detection permanently: AI websites change their DOM frequently. Identify the affected adapter and update its selectors:
 
@@ -233,7 +223,7 @@ console.log("test");
 - **ChatGPT one-line code blocks** may be copied as a "Plain text" line followed by inline code instead of a fenced block. No content is lost.
 - **Language labels without a copy button nearby** are kept as a plain text line. This is deliberate: text is only removed when it sits next to the code block's copy button, to avoid deleting answer words.
 - **Math without a TeX source** (rare) is copied as plain text, e.g. `r²` becomes `r2`.
-- **Site redesigns** can break response detection on one site until its adapter is updated. Selection copying (highlight + `Ctrl+Q`) keeps working in the meantime.
+- **Site redesigns** can break response detection on one site until its adapter is updated. A normal copy (highlight + `Ctrl+C`) keeps working in the meantime.
 
 ## Contributing
 
