@@ -73,7 +73,16 @@ function onChange(event) {
   saveTimer = setTimeout(save, event.target.type === "text" ? 400 : 0);
 }
 
+function showVersion() {
+  const version = `v${chrome.runtime.getManifest().version}`;
+  document.querySelectorAll("[data-version]").forEach((el) => {
+    el.textContent = version;
+  });
+}
+
 async function init() {
+  showVersion();
+
   const settings = await Settings.load();
 
   blockModeInput.checked = settings.blockMode;
