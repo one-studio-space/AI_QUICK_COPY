@@ -2,7 +2,7 @@
 
 > Copy the AI chat response you are reading as clean Markdown — just press `Ctrl+C` with nothing selected.
 
-![Version](https://img.shields.io/badge/version-1.4.0-blue)
+![Version](https://img.shields.io/badge/version-1.4.1-blue)
 ![Manifest](https://img.shields.io/badge/manifest-v3-green)
 ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
@@ -144,6 +144,16 @@ If no response can be recognized (for example after a site redesign), an orange 
 
 Content scripts run only on the supported domains declared in [`manifest.json`](manifest.json). Responses are processed inside the tab and written directly to your clipboard.
 
+Full policy: [PRIVACY.md](PRIVACY.md).
+
+## Publishing
+
+```bash
+./scripts/package.sh   # → dist/ai-quick-copy-<version>.zip
+```
+
+Upload the zip to Microsoft Edge Add-ons or the Chrome Web Store. Listing text, permission justifications, reviewer notes and images are in [`store/`](store/LISTING.md).
+
 ## Project Structure
 
 ```text
@@ -163,6 +173,11 @@ Content scripts run only on the supported domains declared in [`manifest.json`](
 ├── options.html         # Settings page
 ├── options.css
 ├── options.js
+├── icons/               # Extension icons (SVG sources + PNGs)
+├── scripts/
+│   └── package.sh       # Builds the store upload zip into dist/
+├── store/               # Store listing text, logo, promo tiles, screenshots
+├── PRIVACY.md           # Privacy policy (linked from the store listing)
 ├── docs/
 │   └── ARCHITECTURE.md  # Architecture overview
 ├── CHANGELOG.md

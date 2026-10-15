@@ -2,6 +2,11 @@
 
 All notable changes to this project are documented in this file.
 
+## 1.4.1
+- Added the extension icon (toolbar, extensions page and store listing).
+- The settings page shows the current shortcut (`Ctrl+C` / `⌘C`) and reads its version from the manifest instead of a hard-coded `v1.3.1`.
+- Added a privacy policy ([PRIVACY.md](PRIVACY.md)), store listing assets (`store/`) and `scripts/package.sh` to build the zip for Microsoft Edge Add-ons and the Chrome Web Store.
+
 ## 1.4.0
 - The shortcut is now `Ctrl+C` (`⌘C` on macOS) instead of `Ctrl+Q`: with nothing highlighted, it copies the AI response on screen as Markdown.
 - With text highlighted, or in an input field, `Ctrl+C` is left to the browser and copies as usual.
